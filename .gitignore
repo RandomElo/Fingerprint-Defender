@@ -1,0 +1,46 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Node
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.log
+npm-debug.log*
+
+# Python
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# bases locales
+*.sqlite
+*.sqlite3
+*.db
+
+# éditeurs et système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# rapports d'audit
+audits/
+
+# configuration Claude
+.claude/
+
+# résultats de tests et paquets de l'extension
+test-results/
+web-ext-artifacts/

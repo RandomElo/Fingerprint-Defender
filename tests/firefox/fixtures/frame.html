@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>cadre tiers</title>
+<script>
+  /*LIB*/
+  // Un pisteur intégré dans plusieurs sites lit son empreinte et la renvoie à la page qui l'héberge.
+  window.addEventListener("load", () =>
+    setTimeout(() => parent.postMessage({ hash: canvasHash(), measure: measure() }, "*"), 900)
+  );
+</script>
+<body>cadre

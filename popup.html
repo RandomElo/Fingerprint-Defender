@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fingerprint Shield</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="popup">
+  <header class="head">
+    <img src="icons/icon.svg" alt="" width="36" height="36">
+    <div>
+      <h1>Fingerprint Shield</h1>
+      <div class="status" id="status">Protection active</div>
+    </div>
+  </header>
+
+  <div id="perm" hidden>
+    <p class="note">Firefox n'accorde pas l'accès aux sites à l'installation. Sans lui, rien n'est protégé.</p>
+    <div class="buttons"><button id="grant">Autoriser sur tous les sites</button></div>
+  </div>
+
+  <section class="site" id="site"></section>
+  <div id="siteDetails" class="site-details" hidden></div>
+
+  <h2>Sur cette page</h2>
+  <div id="page" class="page-box"></div>
+
+  <h2>Réglages rapides</h2>
+  <label class="row main">
+    <span>Protection active</span>
+    <input type="checkbox" id="enabled">
+  </label>
+  <label class="row">
+    <span>Désactiver sur <b id="host">ce site</b></span>
+    <input type="checkbox" id="siteOff">
+  </label>
+  <div class="row">
+    <span>Niveau (écran, langues)</span>
+    <select id="level">
+      <option value="renforce">Renforcé</option>
+      <option value="prudent">Prudent</option>
+    </select>
+  </div>
+  <div class="row">
+    <span>Alerte avant d'ouvrir un lien</span>
+    <select id="safetyMode">
+      <option value="doubtful">Douteux et dangereux</option>
+      <option value="dangerous">Dangereux seulement</option>
+      <option value="off">Désactivée</option>
+    </select>
+  </div>
+
+  <div class="buttons">
+    <button id="dash">Tableau de bord</button>
+    <button id="view" class="secondary">Mon empreinte</button>
+  </div>
+  <p id="note" class="note">Recharge l'onglet pour appliquer un changement.</p>
+
+  <script src="defaults.js"></script>
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

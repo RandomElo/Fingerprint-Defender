@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fingerprint Shield</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page">
+  <header class="page-head">
+    <img src="icons/icon.svg" alt="" width="48" height="48">
+    <h1>Fingerprint Shield</h1>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="vue">Vue d'ensemble</button>
+    <button role="tab" data-tab="empreinte">Mon empreinte</button>
+    <button role="tab" data-tab="securite">Sécurité des sites</button>
+    <button role="tab" data-tab="reglages">Réglages</button>
+  </nav>
+
+  <!-- Vue d'ensemble -->
+  <section class="panel" id="tab-vue" hidden>
+    <div class="cards three">
+      <div class="card"><div class="num" id="sFlagged">0</div><div class="lbl">pisteurs probables</div></div>
+      <div class="card"><div class="num" id="sChecked">0</div><div class="lbl">sites analysés</div></div>
+      <div class="card"><div class="num" id="sAlerts">0</div><div class="lbl">alertes affichées</div></div>
+    </div>
+    <div class="block">
+      <h2>Pisteurs tiers repérés</h2>
+      <ol class="top" id="top"></ol>
+      <p class="note">Un script chargé depuis un autre domaine que la page est « pisteur probable » quand il lit plusieurs surfaces d'empreinte à la fois : canvas et audio 3 points, WebGL et WebRTC 2, polices, rectangles et divers 1, écran et matériel 0,5. À 5 points, il est signalé. Lire l'écran seul ne suffit jamais, et les scripts du site lui-même ne comptent pas.</p>
+    </div>
+  </section>
+
+  <!-- Empreinte -->
+  <section class="panel" id="tab-empreinte" hidden>
+    <p class="msg">
+      « Réelle » est ce que ton navigateur révèle sans protection. « Vue par les sites » est mesurée dans
+      l'onglet d'où tu as ouvert cette page, après brouillage. Les lignes en jaune ont changé.
+    </p>
+    <div class="ids">
+      <div class="id-card"><div class="label">Identifiant réel</div><div class="value" id="idReal">…</div></div>
+      <div class="id-card"><div class="label">Identifiant vu par les sites</div><div class="value" id="idProt">…</div></div>
+    </div>
+    <div id="fp"></div>
+
+    <h3>Auto-test de cohérence</h3>
+    <p class="msg">
+      Lance dans l'onglet d'où tu as ouvert cette page ce que ferait un script de suivi : relire la même valeur,
+      comparer la page à un cadre et à un worker, recouper l'écran avec le CSS. Une empreinte brouillée mais
+      incohérente est plus facile à repérer qu'une empreinte réelle.
+    </p>
+    <button id="selftest" class="secondary">Lancer l'auto-test</button>
+    <ul class="plain" id="selftestOut"></ul>
+  </section>
+
+  <!-- Sécurité des sites -->
+  <section class="panel" id="tab-securite" hidden>
+    <div class="block">
+      <h2>Analyser un site</h2>
+      <form id="checkForm" class="inline">
+        <input type="text" id="checkInput" placeholder="exemple.com ou https://exemple.com/page" autocomplete="off">
+        <button type="submit">Analyser</button>
+      </form>
+      <div id="checkOut"></div>
+    </div>
+
+    <div class="two">
+      <div class="block">
+        <h2>Réglages</h2>
+        <div class="row">
+          <span>Alerte avant d'ouvrir un lien</span>
+          <select id="safetyMode">
+            <option value="doubtful">Douteux et dangereux</option>
+            <option value="dangerous">Dangereux seulement</option>
+            <option value="off">Désactivée</option>
+          </select>
+        </div>
+        <label class="row">
+          <span>Analyses en ligne (DNS Cloudflare et Quad9, âge du domaine)</span>
+          <input type="checkbox" id="safetyOnline">
+        </label>
+        <label class="row">
+          <span>Analyse complète automatique de chaque page visitée</span>
+          <input type="checkbox" id="safetyAuto">
+        </label>
+        <label class="row">
+          <span>Note de fiabilité au survol de chaque lien externe</span>
+          <input type="checkbox" id="linkBadges">
+        </label>
+        <p class="note">Seul le nom de domaine est envoyé, jamais l'adresse complète. Avec l'analyse automatique, cela concerne aussi les pages que tu visites (hors sites très connus), pour afficher un score fiable sur l'icône. Décoche-la pour ne rien envoyer sans ton action.</p>
+      </div>
+      <div class="block">
+        <h2>Listes de menaces</h2>
+        <ul class="plain" id="feedInfo"></ul>
+        <button id="feedUpdate" class="secondary">Mettre à jour maintenant</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Alertes récentes</h2>
+      <table id="alerts"></table>
+    </div>
+    <div class="block">
+      <h2>Sites de confiance</h2>
+      <ul class="plain removable" id="trusted"></ul>
+    </div>
+  </section>
+
+  <!-- Réglages -->
+  <section class="panel" id="tab-reglages" hidden>
+    <div class="two">
+      <div class="block">
+        <h2>Niveau</h2>
+        <div class="row">
+          <span>Écran et langues</span>
+          <select id="level">
+            <option value="renforce">Renforcé</option>
+            <option value="prudent">Prudent</option>
+          </select>
+        </div>
+        <label class="row main"><span>Protection active</span><input type="checkbox" id="enabled"></label>
+        <div class="row">
+          <span>Changer d'identité automatiquement</span>
+          <select id="seedRotation">
+            <option value="never">Jamais</option>
+            <option value="session">À chaque démarrage</option>
+            <option value="daily">Chaque jour</option>
+            <option value="weekly">Chaque semaine</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button id="rotate" class="secondary">Nouvelle identité</button>
+          <button id="resetStats" class="secondary">Statistiques à zéro</button>
+        </div>
+        <p class="note" id="note">Recharge les onglets ouverts pour appliquer un changement.</p>
+      </div>
+      <div class="block">
+        <h2>Protection coupée sur ces sites</h2>
+        <form id="allowForm" class="inline">
+          <input type="text" id="allowInput" placeholder="meet.google.com" autocomplete="off">
+          <button type="submit">Ajouter</button>
+        </form>
+        <ul class="plain removable" id="allowlist"></ul>
+      </div>
+    </div>
+    <div class="block"><div id="toggles" class="toggles"></div></div>
+  </section>
+
+  <script src="defaults.js"></script>
+  <script src="shared.js"></script>
+  <script src="collector.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

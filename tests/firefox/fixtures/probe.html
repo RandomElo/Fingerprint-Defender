@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>sonde</title>
+<script>
+  // Écouteurs de la page, posés avant tout le reste : ils comptent ce que l'extension laisse passer.
+  window.__events = [];
+  for (const n of ["fsh-config-9d41", "fsh-config-9d41-hello", "fsh-config-9d41-ready", "fsh-config-9d41-stats"]) {
+    window.addEventListener(n, () => window.__events.push(n), true);
+    window.addEventListener(n, () => window.__events.push(n), false);
+  }
+  /*LIB*/
+  // Lectures dès le début de la page, avant que l'extension ait pu lire ses réglages.
+  // (?noearly=1 : pas de lecture précoce, pour mesurer la valeur stable du site.)
+  window.__early = new URLSearchParams(location.search).has("noearly") ? [] : [canvasHash(), canvasHash()];
+  const tracker = new URLSearchParams(location.search).get("tracker");
+  if (tracker) {
+    const s = document.createElement("script");
+    s.src = tracker;
+    document.head.append(s);
+  }
+  window.measureNow = () => ({ canvas: canvasHash(), measure: measure(), rect: rectWidth() });
+  window.addEventListener("load", () =>
+    setTimeout(() => {
+      window.__result = { early: window.__early, late: canvasHash(), measure: measure(), rect: rectWidth() };
+      window.__ready = true;
+    }, 800)
+  );
+</script>
+<body>sonde
