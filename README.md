@@ -1,4 +1,4 @@
-# Fingerprint Shield
+# Fingerprint Defender
 
 Extension Firefox 128+ (Manifest V3) en trois volets : brouiller les empreintes de navigateur sans casser les sites qui détectent les bloqueurs, couper les fuites et nuisances, et évaluer la fiabilité des sites avant de les ouvrir.
 
@@ -210,7 +210,7 @@ L'analyse automatique (`safetyAuto`, activée par défaut) envoie le nom de chaq
 - Dans `about:config` : `network.prefetch-next`, `network.dns.disablePrefetch` (à `true`), `network.http.speculative-parallel-limit` à `0`, `browser.send_pings` à `false`, `media.peerconnection.ice.default_address_only` à `true`, télémétrie et études désactivées. Le `user.js` d'arkenfox est une bonne base à réduire.
 - Désactiver la mesure publicitaire intégrée à Firefox depuis la version 128 (« Privacy-Preserving Attribution ») : Paramètres, Vie privée, « Autoriser les sites web à effectuer une mesure publicitaire respectueuse de la vie privée », ou `dom.private-attribution.submission.enabled` à `false`.
 - Réduire les polices visibles par les sites : `layout.css.font-visibility.standard` et `layout.css.font-visibility.trackingprotection` à `1` (polices de base seulement). C'est plus solide qu'un brouillage de la mesure de texte, au prix de quelques pages un peu moins jolies.
-- uBlock Origin reste complémentaire : il bloque d'après des listes, alors que Fingerprint Shield repère d'après le comportement.
+- uBlock Origin reste complémentaire : il bloque d'après des listes, alors que Fingerprint Defender repère d'après le comportement.
 
 ### 9. Données personnelles qui partent vers des tiers
 
@@ -249,7 +249,7 @@ L'analyse automatique (`safetyAuto`, activée par défaut) envoie le nom de chaq
 
 ### 14. Firefox Android
 
-Firefox Android accepte les extensions. Fingerprint Shield y apporterait le plus, car le téléphone est l'appareil où l'empreinte est la plus stable et où les capteurs fuient. Il faudrait :
+Firefox Android accepte les extensions. Fingerprint Defender y apporterait le plus, car le téléphone est l'appareil où l'empreinte est la plus stable et où les capteurs fuient. Il faudrait :
 
 - un popup lisible sur un écran de téléphone, puisqu'il s'ouvre en plein écran sur Android ;
 - des tailles d'écran standards pour mobile dans la liste du niveau renforcé ;
