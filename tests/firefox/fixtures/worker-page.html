@@ -1,0 +1,111 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>brouillage complet</title>
+<body>brouillage
+<script>
+  /*LIB*/
+  function drawOn(x) {
+    x.textBaseline = "top";
+    x.font = "16px Arial";
+    x.fillStyle = "#f60";
+    x.fillRect(10, 10, 120, 34);
+    x.fillStyle = "#069";
+    x.fillText("Fingerprint Shield 😀", 4, 22);
+    x.fillStyle = "rgba(102,204,0,.7)";
+    x.fillText("Fingerprint Shield 😀", 6, 24);
+  }
+  const bytesHash = async (blob) => fnv(String.fromCharCode(...new Uint8Array(await blob.arrayBuffer())));
+  const inline = (win) => {
+    const c = win.document.createElement("canvas");
+    c.width = 240;
+    c.height = 70;
+    drawOn(c.getContext("2d"));
+    return c;
+  };
+
+  // Page et worker lisent la même chose. src : adresse du script ; opts : options du Worker.
+  window.run = async function (src, opts, ctor = "Worker") {
+    const canvas = inline(window);
+    const page = {
+      png: await bytesHash(await new Promise((r) => canvas.toBlob(r))),
+      cores: navigator.hardwareConcurrency,
+      langs: [...navigator.languages].join(","),
+    };
+    const w = new window[ctor](src, ctor === "SharedWorker" ? opts : opts);
+    const port = ctor === "SharedWorker" ? w.port : w;
+    const res = await new Promise((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error("pas de réponse du worker")), 5000);
+      port.onmessage = (e) => (clearTimeout(t), resolve(e.data));
+      w.onerror = (e) => (clearTimeout(t), reject(new Error("erreur worker " + e.message)));
+      port.postMessage(0);
+    });
+    if (w.terminate) w.terminate();
+    res.png = res.bytes === undefined ? undefined : fnv(res.bytes);
+    delete res.bytes;
+    return { page, worker: res };
+  };
+
+  // Un cadre créé à l'instant et lu tout de suite, sans attendre.
+  window.frameNow = (srcdoc) => {
+    const f = document.createElement("iframe");
+    if (srcdoc) f.srcdoc = srcdoc;
+    document.body.append(f);
+    const w = f.contentWindow;
+    const c = inline(w);
+    const r = {
+      canvas: fnv(c.toDataURL()),
+      page: fnv(inline(window).toDataURL()),
+      cores: w.navigator.hardwareConcurrency,
+      native: /\[native code\]/.test(Function.prototype.toString.call(w.HTMLCanvasElement.prototype.toDataURL)),
+    };
+    f.remove();
+    return r;
+  };
+
+  // Valeurs des surfaces ajoutées en phase 2.
+  window.surfaces = async () => {
+    const out = {};
+    out.screen = { w: screen.width, h: screen.height };
+    out.mqExact = matchMedia(`(device-width: ${screen.width}px) and (device-height: ${screen.height}px)`).matches;
+    out.mqMin = matchMedia(`(min-device-width: ${screen.width + 1}px)`).matches;
+    out.mqMax = matchMedia(`(max-device-width: ${screen.width}px)`).matches;
+    out.gamutP3 = matchMedia("(color-gamut: p3)").matches;
+    out.gamutSrgb = matchMedia("(color-gamut: srgb)").matches;
+    const est = await navigator.storage.estimate();
+    out.quota = est.quota;
+    out.usageMo = est.usage % 1048576 === 0;
+    const gl = document.createElement("canvas").getContext("webgl");
+    out.gl = gl
+      ? {
+          tex: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+          vertexUniforms: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
+          ext: gl.getSupportedExtensions(),
+          vendor: gl.getParameter(gl.getExtension("WEBGL_debug_renderer_info").UNMASKED_VENDOR_WEBGL),
+          viewport: [...gl.getParameter(gl.MAX_VIEWPORT_DIMS)],
+          rare: gl.getExtension("WEBGL_compressed_texture_astc"),
+        }
+      : null;
+    const probe = async (family) => {
+      try {
+        const f = new FontFace("fsh-test-" + family.replace(/\W/g, ""), `local("${family}")`);
+        await f.load();
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+    out.fontCommon = await probe("Arial");
+    out.fontRare = await probe("Zapfino Rare Font 9d41");
+    out.fontWithUrl = await (async () => {
+      try {
+        const f = new FontFace("fsh-test-url", 'local("Zapfino Rare Font 9d41"), url(data:font/woff2;base64,AAAA)');
+        await f.load();
+        return "chargée";
+      } catch (e) {
+        return e.name; // l'échec doit venir du url() invalide (réponse du navigateur), pas de notre refus : même nom d'erreur
+      }
+    })();
+    return out;
+  };
+  window.__ready = true;
+</script>

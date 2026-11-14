@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>bandeau OneTrust</title>
+<body>page
+<script>
+  // Le bandeau arrive tard, comme sur un vrai site (le script du fournisseur se charge après la page).
+  setTimeout(() => {
+    const d = document.createElement("div");
+    d.id = "onetrust-banner-sdk";
+    d.innerHTML = '<p>Nous utilisons des cookies</p><button id="onetrust-accept-btn-handler">Tout accepter</button><button id="onetrust-reject-all-handler">Tout refuser</button>';
+    document.body.append(d);
+    document.getElementById("onetrust-accept-btn-handler").onclick = () => (window.__accepted = true);
+    document.getElementById("onetrust-reject-all-handler").onclick = () => (window.__refused = "onetrust");
+  }, 700);
+</script>

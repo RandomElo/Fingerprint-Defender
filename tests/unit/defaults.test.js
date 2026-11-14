@@ -8,7 +8,7 @@ const vm = require("node:vm");
 // defaults.js est un script classique : on l'évalue dans un contexte isolé et on récupère ses fonctions.
 const ctx = vm.createContext({});
 vm.runInContext(
-  fs.readFileSync(path.join(__dirname, "../../defaults.js"), "utf8") +
+  fs.readFileSync(path.join(__dirname, "../../src/shared/defaults.js"), "utf8") +
     "\nthis.api = { fshSiteKey, fshRegistrable, fshScore, fshIsLocal };",
   ctx
 );

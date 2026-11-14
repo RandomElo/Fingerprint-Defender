@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page bloquée</title>
+  <link rel="stylesheet" href="../../shared/style.css">
+</head>
+<body class="blocked">
+  <main class="warn-box">
+    <header class="warn-head" id="head">
+      <img src="../../../icons/icon.svg" alt="" width="44" height="44">
+      <div>
+        <h1 id="title">Site de phishing probable</h1>
+        <p id="sub">Fingerprint Defender a bloqué cette page avant son chargement.</p>
+      </div>
+    </header>
+    <section class="warn-body">
+      <div class="result-host" id="host"></div>
+      <div class="url" id="url"></div>
+      <p id="explain" class="msg" hidden></p>
+      <div id="why" class="result"><p class="msg">Analyse en cours…</p></div>
+    </section>
+    <footer class="warn-actions">
+      <button id="back">Retourner en lieu sûr</button>
+      <button id="continue" class="risk">Continuer quand même</button>
+      <span class="spacer"></span>
+      <button id="trust" class="link">Toujours faire confiance à ce site</button>
+    </footer>
+  </main>
+  <script src="../../shared/defaults.js"></script>
+  <script src="../../shared/shared.js"></script>
+  <script src="blocked.js"></script>
+</body>
+</html>

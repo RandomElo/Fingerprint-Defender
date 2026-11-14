@@ -2,7 +2,7 @@
 // automatique d'identité. Lancer avec : npm run test:firefox
 const { test, before, after } = require("node:test");
 const assert = require("node:assert/strict");
-const { HOSTS, startServer, startFirefox, storageGet, storageSet } = require("./harness");
+const { HOSTS, startServer, startFirefox, storageGet, storageSet, waitFor } = require("./harness");
 
 // Un Firefox configuré avec quatre langues : l'en-tête d'origine est long, et c'est ce que le serveur ne doit plus voir.
 const PREFS = { "intl.accept_languages": "fr-FR, fr, en-US, en" };
@@ -23,13 +23,13 @@ async function headersAt(driver, host = HOSTS.a) {
 // Les réglages sont relus par l'arrière-plan à chaque changement du stockage : on lui laisse un instant.
 async function setSettings(values) {
   await storageSet(withExt, values);
-  await sleep(500);
+  await sleep(300);
 }
 
 before(async () => {
   ({ server, port } = await startServer());
-  plain = await startFirefox({ extension: false, prefs: PREFS });
-  withExt = await startFirefox({ extension: true, prefs: PREFS });
+  // les deux navigateurs démarrent en même temps
+  [plain, withExt] = await Promise.all([startFirefox({ extension: false, prefs: PREFS }), startFirefox({ extension: true, prefs: PREFS })]);
 });
 
 after(async () => {
@@ -72,7 +72,8 @@ test("désactiver le signal GPC retire l'en-tête", async () => {
   await setSettings({ features: { ...features, gpc: false } });
   try {
     assert.equal((await headersAt(withExt))["sec-gpc"], undefined);
-    assert.notEqual(await withExt.executeScript("return navigator.globalPrivacyControl"), true);
+    // La page reçoit sa configuration un instant après le chargement : on attend qu'elle l'ait prise en compte.
+    await waitFor(async () => (await withExt.executeScript("return navigator.globalPrivacyControl")) !== true, 3000, "le signal GPC est resté actif dans la page");
   } finally {
     await setSettings({ features: { ...features, gpc: true } });
   }

@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>page qui appelle plusieurs tiers</title>
+<body>
+<p>Un article.</p>
+<script>
+  // Cinq tiers différents, comme une page chargée de mesures et de publicités : ?hosts=h1,h2,... et ?port=N.
+  const q = new URLSearchParams(location.search);
+  for (const h of (q.get("hosts") || "").split(",").filter(Boolean)) {
+    const i = new Image();
+    i.src = `http://${h}:${q.get("port")}/probe.html?px=${h}`;
+  }
+</script>

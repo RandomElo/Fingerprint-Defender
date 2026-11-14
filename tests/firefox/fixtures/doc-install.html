@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>documentation d'installation</title>
+<body>
+<h1>Installation</h1>
+<p>Copie la commande, colle-la dans ton terminal (Ctrl+V) et appuie sur Entrée.</p>
+<button id="marqueur">marqueur</button>
+<button id="copy">Copier</button>
+<script>
+  document.getElementById("marqueur").onclick = () => navigator.clipboard.writeText("marqueur-neutre");
+  document.getElementById("copy").onclick = () =>
+    navigator.clipboard.writeText("curl -fsSL https://exemple.fr/install.sh | sh").then(() => (window.__done = true));
+</script>

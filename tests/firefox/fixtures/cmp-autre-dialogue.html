@@ -1,0 +1,16 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>dialogue sans rapport avec les cookies</title>
+<body>page
+<script>
+  // Un dialogue qui propose « Refuser » mais ne parle pas de cookies : l'extension ne doit pas y toucher.
+  setTimeout(() => {
+    const d = document.createElement("div");
+    d.setAttribute("role", "dialog");
+    d.style.cssText = "position:fixed;top:20px;left:20px;padding:20px;background:#eee";
+    d.innerHTML = '<p>Appel entrant de Camille.</p><button id="a">Accepter</button> <button id="r">Refuser</button>';
+    document.body.append(d);
+    document.getElementById("a").onclick = () => (window.__accepted = true);
+    document.getElementById("r").onclick = () => (window.__refused = "appel");
+  }, 300);
+</script>

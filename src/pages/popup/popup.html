@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fingerprint Defender</title>
+  <link rel="stylesheet" href="../../shared/style.css">
+</head>
+<body class="popup">
+  <header class="head">
+    <img src="../../../icons/icon.svg" alt="" width="36" height="36">
+    <div>
+      <h1>Fingerprint Defender</h1>
+      <div class="status" id="status">Protection active</div>
+    </div>
+  </header>
+
+  <div id="perm" hidden>
+    <p class="note">Firefox n'accorde pas l'accès aux sites à l'installation. Sans lui, rien n'est protégé.</p>
+    <div class="buttons"><button id="grant">Autoriser sur tous les sites</button></div>
+  </div>
+
+  <section class="site" id="site"></section>
+  <div id="siteDetails" class="site-details" hidden></div>
+
+  <h2>Sur cette page</h2>
+  <div id="page" class="page-box"></div>
+  <label class="row" id="localnetRow" hidden>
+    <span>Autoriser ce site à joindre mon réseau local</span>
+    <input type="checkbox" id="localnetOk">
+  </label>
+  <label class="row" id="trackersRow" hidden>
+    <span>Ne pas bloquer les pisteurs sur ce site</span>
+    <input type="checkbox" id="trackersOk">
+  </label>
+  <label class="row" id="embedsRow" hidden>
+    <span>Charger les contenus intégrés sans demander</span>
+    <input type="checkbox" id="embedsOk">
+  </label>
+  <label class="row" id="identifiersRow" hidden>
+    <span>Autoriser ce site à envoyer mes identifiants</span>
+    <input type="checkbox" id="identifiersOk">
+  </label>
+
+  <h2>Urgence</h2>
+  <div class="row">
+    <span>Effacer l'activité de</span>
+    <select id="panicHours">
+      <option value="1">la dernière heure</option>
+      <option value="24">les dernières 24 h</option>
+      <option value="0">tout</option>
+    </select>
+  </div>
+  <div class="buttons"><button id="panic" class="secondary">Tout effacer et fermer les onglets</button></div>
+  <div id="panicConfirm" hidden>
+    <p class="note">Cela ferme tous les onglets, efface cookies, cache, historique et téléchargements de la durée choisie, et change d'identité. Tu seras déconnecté des sites.</p>
+    <div class="buttons"><button id="panicYes" class="risk">Oui, tout effacer</button><button id="panicNo" class="secondary">Annuler</button></div>
+  </div>
+
+  <h2>Réglages rapides</h2>
+  <label class="row main">
+    <span>Protection active</span>
+    <input type="checkbox" id="enabled">
+  </label>
+  <label class="row">
+    <span>Désactiver sur <b id="host">ce site</b></span>
+    <input type="checkbox" id="siteOff">
+  </label>
+  <div class="row">
+    <span>Niveau (écran, langues)</span>
+    <select id="level">
+      <option value="renforce">Renforcé</option>
+      <option value="prudent">Prudent</option>
+    </select>
+  </div>
+  <div class="row">
+    <span>Alerte avant d'ouvrir un lien</span>
+    <select id="safetyMode">
+      <option value="doubtful">Douteux et dangereux</option>
+      <option value="dangerous">Dangereux seulement</option>
+      <option value="off">Désactivée</option>
+    </select>
+  </div>
+
+  <div class="buttons">
+    <button id="dash">Tableau de bord</button>
+    <button id="view" class="secondary">Mon empreinte</button>
+  </div>
+  <p id="note" class="note">Recharge l'onglet pour appliquer un changement.</p>
+
+  <script src="../../shared/defaults.js"></script>
+  <script src="../../shared/shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

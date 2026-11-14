@@ -1,5 +1,6 @@
 // Faux pisteur : lit le canvas et l'audio, assez pour être classé « pisteur probable » (3 + 3 points).
 (() => {
+  window.__trackerRan = true; // absent si le script a été bloqué
   const c = document.createElement("canvas");
   c.width = 200;
   c.height = 50;

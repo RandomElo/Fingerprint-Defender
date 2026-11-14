@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>message Sourcepoint</title>
+<body>
+<script>
+  setTimeout(() => {
+    document.body.innerHTML = '<button title="Accept All">Accept All</button><button title="Reject All">Reject All</button>';
+    document.querySelector("button[title='Reject All']").onclick = () => parent.postMessage("refused", "*");
+  }, 400);
+</script>

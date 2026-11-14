@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>bandeau Sourcepoint (cadre d'un autre domaine)</title>
+<body>page
+<script>
+  // Le message est dans un cadre venu du domaine du fournisseur : il prévient la page quand il a été refusé.
+  window.addEventListener("message", (e) => { if (e.data === "refused") window.__refused = "sourcepoint"; });
+  const f = document.createElement("iframe");
+  f.src = new URLSearchParams(location.search).get("inner");
+  document.body.append(f);
+</script>

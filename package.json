@@ -5,7 +5,9 @@
   "description": "Tests de l'extension Fingerprint Defender (l'extension elle-même n'a aucune dépendance).",
   "scripts": {
     "test": "node --test \"tests/unit/*.test.js\"",
-    "test:firefox": "node --test --test-concurrency=1 \"tests/firefox/*.test.js\""
+    "test:firefox": "node --test --test-concurrency=10 \"tests/firefox/*.test.js\"",
+    "test:firefox:seq": "node --test --test-concurrency=1 \"tests/firefox/*.test.js\"",
+    "capture": "node scripts/capture.js"
   },
   "devDependencies": {
     "geckodriver": "^8.0.0",

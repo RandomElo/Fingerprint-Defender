@@ -1,0 +1,21 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>boutique : page de paiement</title>
+<body>
+<h1>Paiement</h1>
+<form id="f" method="post">
+  <label>Numéro de carte <input id="cc" name="cardnumber" autocomplete="cc-number"></label>
+  <label>Nom <input id="nom" name="nom"></label>
+</form>
+<script>
+  // ?action=URL : où part le formulaire. ?frame=URL : la carte est saisie dans un cadre du prestataire.
+  const q = new URLSearchParams(location.search);
+  if (q.get("action")) document.getElementById("f").action = q.get("action");
+  if (q.get("frame")) {
+    document.getElementById("f").hidden = true;
+    const i = document.createElement("iframe");
+    i.id = "pay";
+    i.src = q.get("frame");
+    document.body.append(i);
+  }
+</script>

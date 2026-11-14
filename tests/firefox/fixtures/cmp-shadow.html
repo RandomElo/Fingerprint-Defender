@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>bandeau Usercentrics (shadow DOM)</title>
+<body>page
+<script>
+  setTimeout(() => {
+    const host = document.createElement("div");
+    host.id = "usercentrics-root";
+    document.body.append(host);
+    const root = host.attachShadow({ mode: "open" });
+    root.innerHTML = '<div><button data-testid="uc-accept-all-button">Accept All</button><button data-testid="uc-deny-all-button">Deny All</button></div>';
+    root.querySelector("[data-testid=uc-accept-all-button]").onclick = () => (window.__accepted = true);
+    root.querySelector("[data-testid=uc-deny-all-button]").onclick = () => (window.__refused = "usercentrics");
+  }, 500);
+</script>

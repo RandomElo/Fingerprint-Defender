@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>page avec un contenu intégré</title>
+<body>article
+<script>
+  // Un cadre de vidéo intégré dès le chargement, comme dans un article.
+  const f = document.createElement("iframe");
+  f.id = "video";
+  f.src = new URLSearchParams(location.search).get("src");
+  f.width = 480;
+  f.height = 270;
+  document.body.append(f);
+</script>

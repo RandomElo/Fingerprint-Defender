@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Les meilleures recettes de cuisine</title>
+<body>
+<p>Un article.</p>
+<script>
+  // Pendant que l'onglet est caché, la page se transforme : ?mode=login (page de connexion piégée) ou ?mode=compteur (banal).
+  const mode = new URLSearchParams(location.search).get("mode");
+  const delay = Number(new URLSearchParams(location.search).get("delay") || 500);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) return;
+    setTimeout(() => {
+      if (mode === "login") {
+        document.title = "Connexion à votre compte";
+        const i = document.createElement("input");
+        i.type = "password";
+        document.body.append(i);
+      } else if (mode === "compteur") {
+        document.title = "(3) Les meilleures recettes de cuisine";
+      }
+    }, delay);
+  });
+</script>

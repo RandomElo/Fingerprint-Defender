@@ -7,7 +7,7 @@ const vm = require("node:vm");
 
 const ctx = vm.createContext({});
 vm.runInContext(
-  fs.readFileSync(path.join(__dirname, "../../defaults.js"), "utf8") + "\nthis.api = { fshAcceptLanguage, fshSeedDue, FSH_DEFAULTS };",
+  fs.readFileSync(path.join(__dirname, "../../src/shared/defaults.js"), "utf8") + "\nthis.api = { fshAcceptLanguage, fshSeedDue, FSH_DEFAULTS };",
   ctx
 );
 const { fshAcceptLanguage, fshSeedDue, FSH_DEFAULTS } = ctx.api;

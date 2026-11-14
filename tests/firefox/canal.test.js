@@ -142,7 +142,7 @@ test("l'auto-test du tableau de bord s'exécute dans l'onglet et ne trouve aucun
       const items = await withExt.findElements(By.css("#selftestOut li"));
       return Promise.all(items.map((li) => li.getText()));
     },
-    `dashboard.html?tab=${tabId}#empreinte`
+    `src/pages/dashboard/dashboard.html?tab=${tabId}#empreinte`
   );
   const texte = lignes.join("\n");
   assert.match(texte, /OK\s*Canvas stable/);

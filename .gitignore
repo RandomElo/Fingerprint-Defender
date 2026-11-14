@@ -44,3 +44,6 @@ audits/
 # résultats de tests et paquets de l'extension
 test-results/
 web-ext-artifacts/
+
+# documents de travail générés (recettes de test à la main)
+docs/recettes/

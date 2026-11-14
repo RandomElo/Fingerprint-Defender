@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>lien sortant</title>
+<meta name="referrer" content="unsafe-url">
+<script>
+  // Un lien vers `to`, avec un attribut ping optionnel : ce que fait une page qui veut suivre le clic.
+  const q = new URLSearchParams(location.search);
+  window.addEventListener("DOMContentLoaded", () => {
+    const a = document.createElement("a");
+    a.id = "go";
+    a.href = q.get("to");
+    if (q.get("ping")) a.ping = q.get("ping");
+    a.textContent = "aller";
+    document.body.append(a);
+  });
+</script>
+<body>

@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>article qui ajoute sa source à la copie</title>
+<body>
+<p id="texte">Une phrase de l'article que je copie pour la citer.</p>
+<button id="copy">Copier</button>
+<script>
+  // Comme beaucoup de sites d'actualité : au moment de copier, on ajoute un lien de suivi.
+  document.addEventListener("copy", (e) => {
+    const sel = String(getSelection());
+    e.clipboardData.setData("text/plain", sel + "\n\nLire la suite sur https://journal.example/article?utm_source=copie");
+    e.preventDefault();
+  });
+  document.getElementById("copy").onclick = () => {
+    getSelection().selectAllChildren(document.getElementById("texte"));
+    document.execCommand("copy");
+  };
+</script>

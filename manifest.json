@@ -11,21 +11,42 @@
     }
   },
   "icons": { "16": "icons/icon.svg", "32": "icons/icon.svg", "48": "icons/icon.svg", "96": "icons/icon.svg" },
-  "permissions": ["storage", "scripting", "tabs", "webRequest", "webRequestBlocking", "alarms"],
+  "permissions": ["storage", "scripting", "tabs", "webRequest", "webRequestBlocking", "webRequestFilterResponse", "alarms", "downloads", "browsingData", "contextualIdentities", "contextMenus", "cookies", "clipboardWrite"],
   "host_permissions": ["<all_urls>"],
   "web_accessible_resources": [
-    { "resources": ["blocked.html", "blocked.js", "style.css", "shared.js", "defaults.js", "icons/icon.svg"], "matches": ["<all_urls>"] }
+    { "resources": ["src/pages/blocked/blocked.html", "src/pages/blocked/blocked.js", "src/pages/embed/embed.html", "src/pages/embed/embed.js", "src/shared/style.css", "src/shared/shared.js", "src/shared/defaults.js", "icons/icon.svg"], "matches": ["<all_urls>"] }
   ],
-  "background": { "scripts": ["defaults.js", "reputation.js", "background.js"] },
+  "background": { "scripts": [
+      "src/shared/defaults.js",
+      "src/shared/noise-core.js",
+      "src/background/settings.js",
+      "src/background/reputation.js",
+      "src/background/headers.js",
+      "src/background/identity.js",
+      "src/background/network.js",
+      "src/background/trackers.js",
+      "src/background/identifiers.js",
+      "src/background/workers.js",
+      "src/background/embeds.js",
+      "src/background/redirects.js",
+      "src/background/payment.js",
+      "src/background/habits.js",
+      "src/background/downloads.js",
+      "src/background/tls.js",
+      "src/background/cleanup.js",
+      "src/background/containers.js",
+      "src/background/activity.js",
+      "src/background/background.js"
+    ] },
   "action": {
     "default_title": "Fingerprint Defender",
     "default_icon": "icons/icon.svg",
-    "default_popup": "popup.html"
+    "default_popup": "src/pages/popup/popup.html"
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["inject.js"],
+      "js": ["src/shared/clipboard.js", "src/shared/noise-core.js", "src/content/inject.js"],
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true,
@@ -33,7 +54,7 @@
     },
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["defaults.js", "content.js"],
+      "js": ["src/shared/defaults.js", "src/shared/consent.js", "src/content/banner.js", "src/content/content.js", "src/content/scams.js"],
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true

@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>bandeau inconnu</title>
+<body>page
+<script>
+  setTimeout(() => {
+    const d = document.createElement("div");
+    d.setAttribute("role", "dialog");
+    d.style.cssText = "position:fixed;bottom:0;left:0;right:0;padding:20px;background:#eee";
+    d.innerHTML = '<p>Ce site utilise des cookies pour mesurer son audience.</p><button id="a">Tout accepter</button> <button id="r">Tout refuser</button>';
+    document.body.append(d);
+    document.getElementById("a").onclick = () => (window.__accepted = true);
+    document.getElementById("r").onclick = () => (window.__refused = "generique");
+  }, 500);
+</script>
