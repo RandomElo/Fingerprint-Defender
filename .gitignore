@@ -47,3 +47,6 @@ web-ext-artifacts/
 
 # documents de travail générés (recettes de test à la main)
 docs/recettes/
+
+# fichier temporaire de web-ext sign
+.amo-upload-uuid
