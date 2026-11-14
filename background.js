@@ -197,7 +197,7 @@ async function setBadge(tabId, res) {
     await browser.action.setBadgeTextColor({ tabId, color: "#ffffff" });
     await browser.action.setTitle({
       tabId,
-      title: d.kind === "score" ? `Fingerprint Shield : ${d.label}, ${res.score}/100` : `Fingerprint Shield : ${d.label}`,
+      title: d.kind === "score" ? `Fingerprint Defender : ${d.label}, ${res.score}/100` : `Fingerprint Defender : ${d.label}`,
     });
   } catch (_) {}
 }

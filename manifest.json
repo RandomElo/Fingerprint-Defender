@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Fingerprint Shield",
+  "name": "Fingerprint Defender",
   "version": "3.0.0",
   "description": "Brouille les empreintes de navigateur, coupe les fuites vers les sites, masque les nuisances et vérifie la fiabilité des sites avant d'ouvrir un lien.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "fingerprint-shield@eloi.local",
+      "id": "fingerprint-defender@eloi.local",
       "strict_min_version": "128.0",
       "data_collection_permissions": { "required": ["none"], "optional": ["browsingActivity"] }
     }
@@ -18,7 +18,7 @@
   ],
   "background": { "scripts": ["defaults.js", "reputation.js", "background.js"] },
   "action": {
-    "default_title": "Fingerprint Shield",
+    "default_title": "Fingerprint Defender",
     "default_icon": "icons/icon.svg",
     "default_popup": "popup.html"
   },

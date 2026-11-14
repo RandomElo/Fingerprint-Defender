@@ -17,15 +17,15 @@ function canvasHash() {
   x.fillStyle = "#f60";
   x.fillRect(10, 10, 120, 34);
   x.fillStyle = "#069";
-  x.fillText("Fingerprint Shield 😀", 4, 22);
+  x.fillText("Fingerprint Defender 😀", 4, 22);
   x.fillStyle = "rgba(102,204,0,.7)";
-  x.fillText("Fingerprint Shield 😀", 6, 24);
+  x.fillText("Fingerprint Defender 😀", 6, 24);
   return fnv(c.toDataURL());
 }
 function measure() {
   const x = document.createElement("canvas").getContext("2d");
   x.font = "16px Arial";
-  return x.measureText("Fingerprint Shield").width;
+  return x.measureText("Fingerprint Defender").width;
 }
 function rectWidth() {
   const d = document.createElement("div");

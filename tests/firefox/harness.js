@@ -10,7 +10,7 @@ process.env.SE_AVOID_STATS = "true";
 
 const ROOT = path.resolve(__dirname, "../..");
 const FIXTURES = path.join(__dirname, "fixtures");
-const ADDON_ID = "fingerprint-shield@eloi.local";
+const ADDON_ID = "fingerprint-defender@eloi.local";
 
 // Les trois adresses de bouclage sont trois « sites » différents pour Firefox : une seule instance du serveur
 // suffit. Ce sont des adresses locales, donc l'analyse de réputation de l'extension ne les envoie nulle part.

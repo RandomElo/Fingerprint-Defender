@@ -1,8 +1,8 @@
 {
-  "name": "fingerprint-shield",
+  "name": "fingerprint-defender",
   "version": "3.0.0",
   "private": true,
-  "description": "Tests de l'extension Fingerprint Shield (l'extension elle-même n'a aucune dépendance).",
+  "description": "Tests de l'extension Fingerprint Defender (l'extension elle-même n'a aucune dépendance).",
   "scripts": {
     "test": "node --test \"tests/unit/*.test.js\"",
     "test:firefox": "node --test --test-concurrency=1 \"tests/firefox/*.test.js\""

@@ -25,9 +25,9 @@ window.__fshSelfTest = async function () {
     x.fillStyle = "#f60";
     x.fillRect(10, 10, 120, 34);
     x.fillStyle = "#069";
-    x.fillText("Fingerprint Shield 😀", 4, 22);
+    x.fillText("Fingerprint Defender 😀", 4, 22);
     x.fillStyle = "rgba(102,204,0,.7)";
-    x.fillText("Fingerprint Shield 😀", 6, 24);
+    x.fillText("Fingerprint Defender 😀", 6, 24);
     return canvas;
   }
   const canvasHash = (win) => hash(drawCanvas(win.document.createElement("canvas")).toDataURL());
@@ -105,8 +105,8 @@ window.__fshSelfTest = async function () {
         const x = c.getContext("2d");
         x.textBaseline = "top"; x.font = "16px Arial";
         x.fillStyle = "#f60"; x.fillRect(10, 10, 120, 34);
-        x.fillStyle = "#069"; x.fillText("Fingerprint Shield 😀", 4, 22);
-        x.fillStyle = "rgba(102,204,0,.7)"; x.fillText("Fingerprint Shield 😀", 6, 24);
+        x.fillStyle = "#069"; x.fillText("Fingerprint Defender 😀", 4, 22);
+        x.fillStyle = "rgba(102,204,0,.7)"; x.fillText("Fingerprint Defender 😀", 6, 24);
         const b = await c.convertToBlob();
         r.bytes = String.fromCharCode(...new Uint8Array(await b.arrayBuffer()));
       } catch (e) {}

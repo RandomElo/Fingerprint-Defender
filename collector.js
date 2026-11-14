@@ -63,10 +63,10 @@ window.__fshCollect = async function () {
     g.fillRect(100, 1, 62, 20);
     g.fillStyle = "#069";
     g.font = "15px Arial";
-    g.fillText("Fingerprint Shield, ça brouille 🛡", 2, 15);
+    g.fillText("Fingerprint Defender, ça brouille 🛡", 2, 15);
     g.fillStyle = "rgba(102, 204, 0, 0.7)";
     g.font = "18px Times New Roman";
-    g.fillText("Fingerprint Shield, ça brouille 🛡", 4, 40);
+    g.fillText("Fingerprint Defender, ça brouille 🛡", 4, 40);
     return hash(c.toDataURL());
   });
   const textWidth = await safe(() => {
