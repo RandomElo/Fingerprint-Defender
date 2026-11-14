@@ -76,7 +76,27 @@ npx web-ext run --target=firefox-android --android-device <identifiant adb> --fi
 
 Sur Android, le popup s'ouvre en pleine page. Absents de Firefox Android, donc désactivés sans erreur : le menu du clic droit (conteneur jetable, lien propre), les conteneurs, le nettoyage par site à la fermeture. Le bouton d'urgence efface seulement ce que Firefox Android sait effacer.
 
-Le chargement temporaire disparaît au redémarrage. Pour une installation durable sur PC, utiliser Firefox Developer Edition, Nightly ou ESR avec `xpinstall.signatures.required` à `false`. L'extension n'est pas destinée à être publiée.
+Le chargement temporaire disparaît au redémarrage. Pour une installation durable, installer le fichier signé du dossier `releases/` (voir ci-dessous). L'extension n'est pas publiée sur le site de Mozilla.
+
+### Installation durable (extension signée)
+
+Firefox refuse les extensions non signées. La signature « non listée » de Mozilla est gratuite, automatique, et ne publie rien.
+
+Pour installer la dernière version déjà signée : ouvrir `about:addons`, la roue dentée, « Installer un module depuis un fichier », puis choisir `releases/fingerprint-defender-<version>.xpi`.
+
+Pour signer une nouvelle version :
+
+1. Créer une paire de clés API sur https://addons.mozilla.org/fr/developers/addon/api/key/ (compte Mozilla nécessaire).
+2. Copier `.env.example` en `.env` et y mettre `AMO_KEY` (identifiant JWT) et `AMO_SECRET`. Ce fichier est ignoré par git, ne jamais le commiter.
+3. Augmenter `version` dans `manifest.json` (Mozilla refuse une version déjà signée).
+4. Lancer, depuis la racine du projet (les exclusions évitent d'envoyer `.env` et les tests à Mozilla) :
+
+```
+set -a; source .env; set +a
+npx --yes web-ext sign --channel=unlisted --api-key="$AMO_KEY" --api-secret="$AMO_SECRET" --source-dir . --ignore-files ".env" ".env.*" "tests/**" "scripts/**" "docs/**" "audits/**" ".claude/**" "releases/**" "package*.json" "node_modules/**"
+```
+
+5. Après quelques minutes, le `.xpi` signé est dans `web-ext-artifacts/`. Le copier dans `releases/fingerprint-defender-<version>.xpi`, puis l'installer comme ci-dessus. L'identifiant de l'extension ne change pas : les réglages sont conservés.
 
 ## Anonymisation
 
