@@ -2,6 +2,18 @@
 
 Extension Firefox 128+ (Manifest V3) en trois volets : brouiller les empreintes de navigateur sans casser les sites qui détectent les bloqueurs, couper les fuites et nuisances, et évaluer la fiabilité des sites avant de les ouvrir.
 
+## Aperçu
+
+Captures dans un vrai Firefox, avec des données d'exemple (sites et identifiants fictifs).
+
+<p>
+  <img src="docs/images/popup.png" alt="Popup de l'extension" width="260">
+</p>
+
+<p>
+  <img src="docs/images/page-options.png" alt="Page de réglages" width="620">
+</p>
+
 ## Structure du projet
 
 ```
