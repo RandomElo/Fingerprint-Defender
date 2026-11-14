@@ -211,6 +211,33 @@ function storePageSignals(msg, sender) {
 // --- garde de navigation : page de phishing probable, quel que soit le chemin du lien -------------------
 // Un lien ouvert depuis un mail, une autre application ou la barre d'adresse ne passe pas par le script de
 // la page : on contrôle donc aussi chaque navigation. Analyse locale uniquement (aucune attente réseau).
+// Chaque navigation attend cette fonction : tout vient de la mémoire (réglages, listes, verdicts déjà calculés), le stockage
+// n'est lu que dans les rares cas où un site est vraiment bloqué.
+const guardMemo = new Map(); // adresse sans paramètres -> { res, at }
+const GUARD_MEMO_TTL = 10 * 60 * 1000;
+let guardHabits = null;
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.feeds || Object.keys(changes).some((k) => !NOT_SETTINGS.includes(k))) guardMemo.clear();
+  if (changes.habits) guardHabits = null;
+});
+Reputation.warm();
+
+async function guardVerdict(u) {
+  const key = u.hostname + u.pathname;
+  const hit = guardMemo.get(key);
+  if (hit && Date.now() - hit.at < GUARD_MEMO_TTL) return hit.res;
+  const res = await Reputation.checkSite(u.href, { online: false, noCache: true });
+  if (guardMemo.size >= 200) guardMemo.delete(guardMemo.keys().next().value);
+  guardMemo.set(key, { res, at: Date.now() });
+  return res;
+}
+
+// « Continuer quand même » (page de blocage) : site laissé passé pendant une heure. Lu seulement quand un blocage est sur le point d'avoir lieu.
+async function bypassed(host) {
+  const { bypass } = await chrome.storage.session.get({ bypass: {} });
+  return !!bypass[host] && Date.now() - bypass[host] < 3600000;
+}
+
 async function guardNavigation(details) {
   let u;
   try {
@@ -219,25 +246,23 @@ async function guardNavigation(details) {
     return {};
   }
   if (!/^https?:$/.test(u.protocol) || fshIsLocal(u.hostname)) return {};
-  const s = await chrome.storage.local.get({ enabled: true, safetyMode: FSH_DEFAULTS.safetyMode, trusted: [] });
+  const s = await settings();
   if (!s.enabled || s.safetyMode === "off") return {};
   const h = u.hostname;
-  if (s.trusted.some((d) => h === d || h.endsWith("." + d))) return {};
-  const { bypass } = await chrome.storage.session.get({ bypass: {} });
-  if (bypass[h] && Date.now() - bypass[h] < 3600000) return {};
+  if (isAllowed(s.trusted, h)) return {};
 
-  const res = await Reputation.checkSite(details.url, { online: false, noCache: true });
+  const res = await guardVerdict(u);
   const sure = res && res.verdict === "dangerous" && (res.findings.some((f) => f.critical) || res.score <= 30);
   if (!sure) {
     // Pas assez grave pour être bloqué, mais s'il s'écrit presque comme un site que tu visites souvent, on te le dit.
-    const f = await settings();
-    if (!f.features.typo) return {};
-    const { habits } = await chrome.storage.local.get({ habits: {} });
-    const like = fshLooksLikeHabit(h, habits);
-    if (!like) return {};
+    if (!s.features.typo) return {};
+    if (!guardHabits) guardHabits = (await chrome.storage.local.get({ habits: {} })).habits;
+    const like = fshLooksLikeHabit(h, guardHabits);
+    if (!like || (await bypassed(h))) return {};
     recordScam({ kind: "typo", host: h, level: "doubtful", reasons: [`ressemble à ${like}`] });
     return { redirectUrl: chrome.runtime.getURL("src/pages/blocked/blocked.html") + "?kind=typo&like=" + encodeURIComponent(like) + "&u=" + encodeURIComponent(details.url) };
   }
+  if (await bypassed(h)) return {};
   updateSafetyStats((x) => (x.alerts += 1));
   return { redirectUrl: chrome.runtime.getURL("src/pages/blocked/blocked.html") + "?u=" + encodeURIComponent(details.url) };
 }

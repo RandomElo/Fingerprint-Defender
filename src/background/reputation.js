@@ -471,5 +471,7 @@ const Reputation = (() => {
     return out;
   }
 
-  return { checkSite, updateFeeds, companyFindings };
+  // Charge les listes en mémoire dès le démarrage : la première navigation n'attend plus leur lecture.
+  const warm = () => loadFeeds().catch(() => {});
+  return { checkSite, updateFeeds, companyFindings, warm };
 })();
